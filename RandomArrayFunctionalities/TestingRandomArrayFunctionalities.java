@@ -47,8 +47,6 @@ public class TestingRandomArrayFunctionalities{
 		stringToInt(stringSet2, set2); // initialize array
 		System.out.println();
 
-		System.out.println("Checking if\n" + stringSet2 + " \nis a subset of\n" + stringSet1);
-		System.out.println();
 		System.out.println(stringSet2);
 		if(tester1.isSubset(set1, set2)){
 			System.out.print("is a ");
@@ -62,9 +60,15 @@ public class TestingRandomArrayFunctionalities{
 		System.out.println("Please enter a number less than the length of the string given");
 		int length = sc.nextInt();
 
-		System.out.println("Iteratively looping down starting from the first " + length + " characters of " + string);
-		System.out.println(tester1.stringLoop(string, length));
-
+		if(length > 0 && length <= string.length()){
+			System.out.println("Iteratively looping down starting from the first " + length + " characters of " + string);
+			System.out.println(tester1.stringLoop(string, length));
+		} else if (length <= 0){
+			System.out.println("Invalid input: Number cannot be negative\nQuitting program...");
+		} else{
+			System.out.println("Invalid input: Number is greater than string length\nQuitting program...");
+		}
+		
 		sc.close();
 	}
 }
