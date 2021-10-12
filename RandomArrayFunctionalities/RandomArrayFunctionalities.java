@@ -17,9 +17,6 @@ public class RandomArrayFunctionalities{
 		}
 
 		boolean[] found = new boolean[set1.length]; // keeps track of found elements in set1
-		for(int i = 0; i < found.length; i++){
-			found[i] = false;
-		}
 
 		for(int i = 0; i < set2.length; i++){
 			for(int j = 0; j < set1.length; j++){ 
