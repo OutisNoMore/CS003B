@@ -17,25 +17,18 @@ public class RandomArrayFunctionalities{
 		}
 
 		boolean[] found = new boolean[set1.length]; // keeps track of found elements in set1
-
+		int countFound = 0;
 		for(int i = 0; i < set2.length; i++){
 			for(int j = 0; j < set1.length; j++){ 
 				// to account for duplicates in sets must know if an element has already been found
 				if(set2[i] == set1[j] && !found[j]){
 					found[j] = true;
+					countFound++;
 				}
 			}
 		}
 
-		// verifies that all elements of set2 have been found
-		int count = 0;
-		for(boolean b : found){
-			if(b){
-				count++;
-			}
-		}
-
-		return count == set2.length;
+		return countFound == set2.length;
 	}
 
 	/**
