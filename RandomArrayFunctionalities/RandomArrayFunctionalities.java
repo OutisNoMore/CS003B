@@ -5,8 +5,6 @@
 // Author: Jaemok C. Lee
 // Professor: Garen Kutukian
 // Date: 20/10/2021
-import java.util.Arrays;
-
 public class RandomArrayFunctionalities{
 	/**
 	 * This method returns true if set2 is a subset of set1
