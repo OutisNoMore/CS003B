@@ -2,15 +2,19 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class UserInput{
+	private final String banner = "----------------------------------------\n" +
+									 	    			  "Now Playing: Multiplayer Tic-Tac-Toe\n"     +
+						                    "----------------------------------------\n\n";
+
 	public static void main(String args[]){
 		Scanner input = new Scanner(System.in);
 		boolean inGame = true;
 
-		System.out.println(printIntro());
+		System.out.println(banner);
 		int numberOfPlayers = getNumberOfPlayers(input);
 		char[] playerTokens = getPlayerTokens(input, numberOfPlayers);
 		int winningNumber = getWinningNumber(input, numberOfPlayers);
-		
+
 		Board gameBoard = new Board(numberOfPlayers);
 		int playerTurn = 1;
 		int x = -1;
@@ -78,7 +82,7 @@ public class UserInput{
 				continue;
 			}
 			int numberOfPlayers = sc.nextInt();
-			
+
 			if(numberOfPlayers < 2 || numberOfPlayers > 7){
 				System.out.println("\nError: Input must be between 2 and 7\nPlease try again");
 			}
