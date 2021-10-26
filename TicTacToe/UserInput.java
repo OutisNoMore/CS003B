@@ -1,142 +1,231 @@
-import java.util.Scanner;
-import java.util.ArrayList;
+// UserInput class
+// Program class that calls all other dependencies. 
+// This class is in charge of all user input and output
+//
+// Author: Jaemok C. Lee
+// Professor: Garen Kutukian
+// Class: CS 003B
+// Date: 10/26/2021
+import java.util.Scanner; // user input
 
 public class UserInput{
-	private final String banner = "----------------------------------------\n" +
-									 	    			  "Now Playing: Multiplayer Tic-Tac-Toe\n"     +
-						                    "----------------------------------------\n\n";
+	// Intro banner for aesthetic game experience
+	private static final String introBanner = "----------------------------------------\n" +
+									 	    		   	            "Now Playing: Multiplayer Tic-Tac-Toe\n"     +
+						                                "----------------------------------------\n\n";
+	// ending game banner for aesthetics
+	private static final String endBanner   = "----------------------------------------\n" +
+		                                        "Game Over\nGood Bye...\n"                   +
+																		        "----------------------------------------\n\n";
 
+	/*
+	 * void main
+	 * Main function is in charge of user input and output
+	 *
+	 * @param args (String[]) - any command=line parameters
+	 * @return none
+	 */
 	public static void main(String args[]){
-		Scanner input = new Scanner(System.in);
-		boolean inGame = true;
+		Scanner input = new Scanner(System.in); // scanner to get all user input
 
-		System.out.println(banner);
-		int numberOfPlayers = getNumberOfPlayers(input);
-		char[] playerTokens = getPlayerTokens(input, numberOfPlayers);
-		int winningNumber = getWinningNumber(input, numberOfPlayers);
+		System.out.println(introBanner); // prints intro banner
+		int numberOfPlayers = getNumberOfPlayers(input); // gets number of players in the game  
+		char[] playerTokens = getPlayerTokens(input, numberOfPlayers); // gets tokens for all players
+		int winningNumber = getWinningNumber(input, numberOfPlayers);  // gets the amount requried to win
 
-		Board gameBoard = new Board(numberOfPlayers);
-		int playerTurn = 1;
-		int x = -1;
-		int y = -1;
+		Board gameBoard = new Board(numberOfPlayers); // creates new board with given number of players
+		int inputRow    = -1; // user input row
+		int inputCol    = -1; // user input column
+		int realRow     = -1; // corresponding row index of Board
+		int realCol     = -1; // corresponding column index of board
+		int playerTurn  = 1;  // keeps track of which player's turn 
 		while(true){
+			// Check if there are no more moves to make
+			if(GameLogic.isDraw(gameBoard)){
+				System.out.println("\nGame is a draw\n");
+				break;
+			}
+			// Checks for end of a round
 			if(playerTurn > numberOfPlayers){
 				playerTurn = 1;
 			}
 
+			// Prints board
+			System.out.println(gameBoard);
 			System.out.println("Player " + playerTurn + " turn");
-			System.out.print("Please enter a X coordinate: ");
+
+			// Prompts user for row number
+			System.out.print("Please enter row number: ");
+			// checks if input is a number
 			if(!input.hasNextInt()){
 				input.nextLine();
 				System.out.println("\nError: input must be a number\nPlease try again\n");
 				continue;
 			}
-			x = input.nextInt();
-			if(x < 0 || x > (numberOfPlayers+1)){
-				System.out.println("\nError: input is out of bounds\nPlease try again\n");
-				continue;
-			}
-			System.out.print("Please enter a Y coordinate: ");
-			if(!input.hasNextInt()){
-				input.nextLine();
-				System.out.println("\nError: input must be a number\nPlease try again\n");
-				continue;
-			}
-			y = input.nextInt();
-			if(y < 0 || y > (numberOfPlayers+1)){
+			inputRow = input.nextInt();
+			// checks that input is not out of bounds
+			if(inputRow < 0 || inputRow > numberOfPlayers){
 				System.out.println("\nError: input is out of bounds\nPlease try again\n");
 				continue;
 			}
 
-			if(!gameBoard.validatePosition(x, y)){
-				System.out.println("Error: Another player has already made that move\nPlease try again");
+			// prompts user for column number
+			System.out.print("Please enter column number: ");
+			// checks that is a number
+			if(!input.hasNextInt()){
+				input.nextLine();
+				System.out.println("\nError: input must be a number\nPlease try again\n");
+				continue;
 			}
-			gameBoard.updateBoard(playerTokens[playerTurn-1], x, y);
-			if(GameLogic.boardHasSolution(gameBoard, playerTokens[playerTurn-1], x, y)){
-				// Game won
+			inputCol = input.nextInt();
+			// checks that input is  not out of bounds
+			if(inputCol < 0 || inputCol > numberOfPlayers){
+				System.out.println("\nError: input is out of bounds\nPlease try again\n");
+				continue;
+			}
+			System.out.println();
+
+			// convert from board number to board index
+			realRow = 2*inputRow + 2; 
+			realCol = 2*inputCol + 2;
+			// checks that position has not been taken yet
+			if(!gameBoard.validatePosition(realRow, realCol)){
+				System.out.println("Error: Another player has already made that move\nPlease try again\n");
+				continue;
+			}
+			// updates board with player move
+			gameBoard.updateBoard(playerTokens[playerTurn-1], realRow, realCol);
+			// checks if player is a winner
+			if(GameLogic.boardHasWinner(gameBoard, playerTokens[playerTurn-1], winningNumber, realRow, realCol)){
+				System.out.println("\nCongratulations!\nPlayer " + playerTokens[playerTurn-1] + " has won.\n");
 				break;
 			}
+
+			// advances on to next player
 			playerTurn++;
 		}
-		// Game draw
+		// print winning or draw board
+		System.out.println(gameBoard);
 
+		// say good bye and close scanner
+		System.out.println(endBanner);
 		input.close();
 	}
 
-	private static String printIntro(){
-		String output = "";
-		output = "----------------------------------------\n" +
-						 "Now Playing: Multiplayer Tic-Tac-Toe\n"     +
-						 "----------------------------------------\n\n";
-
-		return output;
-	}
-
+	/*
+	 * int getNumberOfPlayers
+	 * Prompts user for the number of players in the game
+	 *
+	 * @param sc (Scanner) - input stream to get input from
+	 * @return int - number of players
+	 */
 	private static int getNumberOfPlayers(Scanner sc){
+		int numberOfPlayers;
 		while(true){
-			System.out.print("Number of players? (Please enter a number between 2 and 7) ");
-			
+			System.out.print("Number of players? (Please enter a number between 3 and 10) ");
+		
+			// check that input is a number
 			if(!sc.hasNextInt()){
-				sc.nextLine();
+				sc.nextLine(); // clear input buffer
 				System.out.println("\nError: Input must be a whole number\nPlease try again");
 				continue;
 			}
-			int numberOfPlayers = sc.nextInt();
+			numberOfPlayers = sc.nextInt();
 
-			if(numberOfPlayers < 2 || numberOfPlayers > 7){
-				System.out.println("\nError: Input must be between 2 and 7\nPlease try again");
+			// check that it is the right number of players
+			if(numberOfPlayers < 3 || numberOfPlayers > 10){
+				sc.nextLine(); // clear input buffer
+				System.out.println("\nError: Input must be between 3 and 10\nPlease try again");
+				continue;
 			}
+			System.out.println();
+			break;
 		}
+
+		return numberOfPlayers;
 	}
 
+	/*
+	 * char[] getPlayerTokens
+	 * Gets the tokens of all players
+	 *
+	 * @param sc (Scanner) - input stream to read from
+	 * 				numberOfPlayers (int) - number of players
+	 * @return - char[] - array of all player tokens
+	 */
 	private static char[] getPlayerTokens(Scanner sc, int numberOfPlayers){
+		sc.nextLine(); // clear input buffer
 		char [] playerTokens = new char[numberOfPlayers];
-		String regex = "";
+		String input = "";
 		int count = 1;
 
 		while(count <= numberOfPlayers){
 			System.out.print("Player " + count + " please enter your symbol (must be a single character): ");
 			
-			if(!sc.hasNext(regex)){
-				sc.nextLine();
-				System.out.println("\nError: Input must be a character\nPlease try again");
+			input = sc.nextLine();
+
+			// check that input is a single character
+			if(input.length() != 1){
+				System.out.println("\nError: Input must be a single character\nPlease try again");
 				continue;
 			}
+			// check that input is not a number
+			if(input.matches("[0-9]")){
+				System.out.println("\nError: Input cannot be a number\nPlease try again");
+				continue;
+			}
+			
+			// check that token is not already taken
+			boolean badToken = false;
+			for(int i = count - 1; i > 0; i--){
+				if(playerTokens[i-1] == input.charAt(0)){
+					System.out.println("Error: Character has already been taken\nPlease try again");
+					badToken = true;
+					break;
+				}
+			}
+			if(badToken){
+				continue;
+			}
+
 			System.out.println();
 
-			playerTokens[count-1] = sc.next().charAt(0);
+			playerTokens[count-1] = input.charAt(0);
 			count++;
 		}
 
 		return playerTokens;
 	}
 
+	/*
+	 * int getWinningNumber
+	 * Gets the number required to win the game
+	 *
+	 * @param sc (Scanner) - input stream to read from
+	 * 				numberOfPlayers (int) - number of players in game
+	 * 	@return int - continuous number of tokens required to win
+	 */
 	private static int getWinningNumber(Scanner sc, int numberOfPlayers){
 		int winningNumber;
 
 		while(true){
-			System.out.print("Please choose how many pieces in a row, column, or diagonal are required to win (must be between 3 and " + (numberOfPlayers + 1) + "): ");
+			System.out.print("Please choose how many pieces in a row, column, or diagonal are required to win (must be between 3 and " + (numberOfPlayers + 1) + ") ");
+			// Check that input is a number
 			if(!sc.hasNextInt()){
-				sc.nextLine();
+				sc.nextLine(); // clear input buffer
 				System.out.println("\nError: Input must be a number\nPlease try again");
 				continue;
 			}
 			winningNumber = sc.nextInt();
-			if(winningNumber < 3 || winningNumber > (numberOfPlayers + 1)){
-				System.out.println("\nError: Input must be between 3 and " + (numberOfPlayers + 1) + "\nPlease try again");
+			// check that input is not out of bounds
+			if(winningNumber <  3 || winningNumber > (numberOfPlayers + 1)){
+				sc.nextLine(); // clear input buffer
+				System.out.println("\nError: Input must be between 3 and " + (numberOfPlayers+1) + "\nPlease try again");
 				continue;
 			}
 			break;
 		}
 
 		return winningNumber;
-	}
-
-	private static int getX(Scanner sc){
-
-	}
-
-	private static int getY(Scanner sc){
-
 	}
 }
