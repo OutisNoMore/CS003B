@@ -52,7 +52,7 @@ public class UserInput{
 
 			// Prints board
 			System.out.println(gameBoard);
-			System.out.println("Player " + playerTurn + " turn");
+			System.out.println("Player " + playerTokens[playerTurn-1] + " turn");
 
 			// Prompts user for row number
 			System.out.print("Please enter row number: ");

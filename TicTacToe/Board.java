@@ -6,7 +6,7 @@
 //Class: CS 003B
 //Date: 10/26/2021
 public class Board{
-	private char[][] board; // 2D array of characters 
+	private String[][] board; // 2D array of Strings
 	private int boardSize;  // Size of the board
 
 	/**************
@@ -22,7 +22,7 @@ public class Board{
 	 */
 	public Board(int numberOfPlayers){
 		boardSize = numberOfPlayers*2 + 4;
-		board = new char[boardSize][boardSize];
+		board = new String[boardSize][boardSize];
 
 		initializeBoard(boardSize);
 	}
@@ -39,22 +39,22 @@ public class Board{
 	 * @return none
 	 */
 	private void initializeBoard(int boardSize){
-		board[0][0] = ' '; // corner piece is always empty
+		board[0][0] = " "; // corner piece is always empty
 		// initialize first row with column numbers
 		for(int i = 1; i < boardSize; i++){
 			if(i%2 == 0){ 
-				board[0][i] = (char)((i/2) - 1 + 48);
+				board[0][i] = ((i/2) - 1) + "";
 			} else{
-				board[0][i] = '|'; 
+				board[0][i] = "|"; 
 			}
 		}
 
 		// initialize first column with row numbers
 		for(int j = 1; j < boardSize; j++){
 			if(j%2 == 0){
-				board[j][0] = (char)((j/2) - 1 + 48);
+				board[j][0] = ((j/2) - 1) + "";
 			} else{
-				board[j][0] = '-';
+				board[j][0] = "-";
 			}
 		}
 
@@ -63,15 +63,15 @@ public class Board{
 			if(i%2 == 0){
 				for(int j = 1; j < boardSize; j++){
 					if(j%2 == 1){
-						board[i][j] = '|';
+						board[i][j] = "|";
 					} else{
-						board[i][j] = ' ';
+						board[i][j] = " ";
 					}
 				}
 			} 
 			else{ 
 				for(int j = 1; j < boardSize; j++){
-					board[i][j] = '-';
+					board[i][j] = "-";
 				}
 			}
 		}
@@ -88,7 +88,7 @@ public class Board{
 	 */
 	public void updateBoard(char playerToken, int row, int col){
 		if(validatePosition(row, col)){
-			board[row][col] = playerToken;
+			board[row][col] = playerToken + "";
 		}
 	}
 
@@ -116,7 +116,7 @@ public class Board{
 	 */
 	public boolean validatePosition(int row, int col){
 		// check if another player has already made move
-		if(board[row][col] != ' '){
+		if(board[row][col] != " "){
 			return false;
 		}
 		
@@ -247,7 +247,7 @@ public class Board{
 			if(str.charAt(i) != '|' && 
 				 str.charAt(i) != '-' && 
 				 str.charAt(i) != ' ' ){
-				output += str.substring(i, i+1) + "";
+				output += str.substring(i, i+1);
 			}
 		}
 
@@ -267,7 +267,7 @@ public class Board{
 
 		for(int i = 0; i < boardSize; i++){
 			for(int j = 0; j < boardSize; j++){
-				output += board[i][j] + "";
+				output += board[i][j];
 			}
 			output += "\n";
 		}
