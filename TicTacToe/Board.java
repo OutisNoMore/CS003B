@@ -179,7 +179,7 @@ public class Board{
 
 		// for the upper triangular half of the board
 		if((row + col) <= board.length){
-			int currRow = Math.abs(row + col) - 2; // fird the first row position to start at
+			int currRow = (row + col) - 2; // find the first row position to start at
 			// get the diagonal beginning at the row
 				for(int c = 2; currRow > 1 && c < board.length; c += 2, currRow -= 2){
 					antiDiagonal += board[currRow][c] + "";
