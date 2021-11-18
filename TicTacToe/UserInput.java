@@ -28,11 +28,12 @@ public class UserInput{
 	public static void main(String args[]){
 		Scanner input = new Scanner(System.in); // scanner to get all user input
 
-		System.out.println(introBanner); // prints intro banner
-		int numberOfPlayers = getNumberOfPlayers(input); // gets number of players in the game  
+		System.out.println(introBanner);                               // prints intro banner
+		int numberOfPlayers = getNumberOfPlayers(input);               // gets number of players in the game  
 		char[] playerTokens = getPlayerTokens(input, numberOfPlayers); // gets tokens for all players
 		int winningNumber = getWinningNumber(input, numberOfPlayers);  // gets the amount requried to win
 
+    // starts a new game with the given information
 		Board gameBoard = new Board(numberOfPlayers); // creates new board with given number of players
 		int inputRow    = -1; // user input row
 		int inputCol    = -1; // user input column
@@ -42,11 +43,11 @@ public class UserInput{
 		while(true){
 			// Check if there are no more moves to make
 			if(GameLogic.isDraw(gameBoard)){
-				System.out.println("\nGame is a draw\n");
+				System.out.println("\nThe game is a draw\n");
 				break;
 			}
 			// Checks for end of a round
-			if(playerTurn > numberOfPlayers){
+			if(playerTurn == (numberOfPlayers+1)){
 				playerTurn = 1;
 			}
 
@@ -54,35 +55,16 @@ public class UserInput{
 			System.out.println(gameBoard);
 			System.out.println("Player " + playerTokens[playerTurn-1] + " turn");
 
-			// Prompts user for row number
-			System.out.print("Please enter row number: ");
-			// checks if input is a number
-			if(!input.hasNextInt()){
-				input.nextLine();
-				System.out.println("\nError: input must be a number\nPlease try again\n");
-				continue;
-			}
-			inputRow = input.nextInt();
-			// checks that input is not out of bounds
-			if(inputRow < 0 || inputRow > numberOfPlayers){
-				System.out.println("\nError: input is out of bounds\nPlease try again\n");
-				continue;
-			}
-
-			// prompts user for column number
-			System.out.print("Please enter column number: ");
-			// checks that is a number
-			if(!input.hasNextInt()){
-				input.nextLine();
-				System.out.println("\nError: input must be a number\nPlease try again\n");
-				continue;
-			}
-			inputCol = input.nextInt();
-			// checks that input is  not out of bounds
-			if(inputCol < 0 || inputCol > numberOfPlayers){
-				System.out.println("\nError: input is out of bounds\nPlease try again\n");
-				continue;
-			}
+      // get row number to place token
+      inputRow = getBoardNumber(input, "row", numberOfPlayers);
+      if(inputRow == -1){
+        continue; // invalid input
+      }
+      // get column number to place token
+      inputCol = getBoardNumber(input, "col", numberOfPlayers);
+      if(inputCol == -1){
+        continue; // invalid input
+      }
 			System.out.println();
 
 			// convert from board number to board index
@@ -169,9 +151,9 @@ public class UserInput{
 				System.out.println("\nError: Input must be a single character\nPlease try again");
 				continue;
 			}
-			// check that input is not a number
-			if(input.matches("[0-9]")){
-				System.out.println("\nError: Input cannot be a number\nPlease try again");
+			// check that input is not a letter
+			if(!input.matches("[A-Z]|[a-z]")){
+				System.out.println("\nError: Input must be a letter\nPlease try again");
 				continue;
 			}
 			
@@ -187,7 +169,6 @@ public class UserInput{
 			if(badToken){
 				continue;
 			}
-
 			System.out.println();
 
 			playerTokens[count-1] = input.charAt(0);
@@ -228,4 +209,33 @@ public class UserInput{
 
 		return winningNumber;
 	}
+
+	/*
+	 * int getBoardNumber 
+	 * Gets the row or column number to place a character's token
+	 *
+	 * @param sc (Scanner) - input stream to read from
+   *        position (String) - row or column
+	 * 				numberOfPlayers (int) - number of players in game
+	 * 	@return int - row or column number
+	 */
+  private static int getBoardNumber(Scanner sc, String position, int numberOfPlayers){
+    int input = -1;
+	  // Prompts user for number
+		System.out.print("Please enter " + position + " number: ");
+		// checks if input is a number
+		if(!sc.hasNextInt()){
+			sc.nextLine(); // clear input buffer
+			System.out.println("\nError: input must be a number\nPlease try again\n");
+			return -1; // return error
+		}
+		input = sc.nextInt();
+		// checks that input is not out of bounds
+		if(input < 0 || input > numberOfPlayers){
+			System.out.println("\nError: input is out of bounds\nPlease try again\n");
+		  return -1; // return error
+		}
+
+    return input;
+  }
 }

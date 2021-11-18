@@ -48,16 +48,6 @@ public class GameLogic{
 	 * @return boolean - true if game is a draw, false otherwise
 	 */
 	public static boolean isDraw(Board board){
-		String row = "";
-		
-		// if every single row is filled, then is a draw
-		for(int i = 2; i < board.getBoardSize(); i += 2){
-			row = board.getRow(i);
-			if(row.length() != (board.getBoardSize()-2)/2){
-				return false;
-			}
-		}
-
-		return true;
+    return board.isFull();
 	}
 }

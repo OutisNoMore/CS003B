@@ -7,7 +7,8 @@
 //Date: 10/26/2021
 public class Board{
 	private String[][] board; // 2D array of Strings
-	private int boardSize;  // Size of the board
+	private int boardSize;    // Size of the board
+  private int spacesFilled; // Keeps track of how full a board is
 
 	/**************
 	 * CONSTRUTOR *
@@ -23,6 +24,7 @@ public class Board{
 	public Board(int numberOfPlayers){
 		boardSize = numberOfPlayers*2 + 4;
 		board = new String[boardSize][boardSize];
+    spacesFilled = 0;
 
 		initializeBoard(boardSize);
 	}
@@ -89,6 +91,7 @@ public class Board{
 	public void updateBoard(char playerToken, int row, int col){
 		if(validatePosition(row, col)){
 			board[row][col] = playerToken + "";
+      spacesFilled++;
 		}
 	}
 
@@ -106,6 +109,17 @@ public class Board{
 	public int getBoardSize(){
 		return boardSize;
 	}
+
+	/*
+	 * int isFull
+	 * Returns if the board is full or not
+	 *
+	 * @param none
+	 * @return boolean - true if board is full, false otherwise
+	 */
+  public boolean isFull(){
+    return spacesFilled == ((boardSize/2) - 1)*((boardSize/2) - 1);
+  }
 
 	/*
 	 * boolean validatePosition
