@@ -95,6 +95,17 @@ public class Board{
 		}
 	}
 
+	/*
+	 * int toIndex 
+	 * Converts board position to board index
+	 *
+	 * @param position (int) - row or column
+	 * @return int - board index
+	 */
+  public static int toIndex(int position){
+    return 2*position + 2;
+  }
+
 	/*************
 	 * ACCESSORS *
 	 *************/
@@ -173,7 +184,7 @@ public class Board{
 		String column = "";
 		// skip all separators
 		for(int i = 2; i < board.length; i += 2){
-			column += board[i][col] + "";
+			column += board[i][col];
 		}
 
 		// format output so that only player tokens remain
@@ -196,7 +207,7 @@ public class Board{
 			int currRow = (row + col) - 2; // find the first row position to start at
 			// get the diagonal beginning at the row
 				for(int c = 2; currRow > 1 && c < board.length; c += 2, currRow -= 2){
-					antiDiagonal += board[currRow][c] + "";
+					antiDiagonal += board[currRow][c];
 				}
 		}
 		// for the lower triangualr half of the board
@@ -205,7 +216,7 @@ public class Board{
 			int currCol = Math.abs(row - col) + 2;
 			// get the diagonal starting at the column
 			for(int r = board.length - 1; currCol < board.length && r > 1; currCol += 2, r -= 2){
-				antiDiagonal += board[r][currCol] + "";
+				antiDiagonal += board[r][currCol];
 			}
 		}
 
@@ -230,7 +241,7 @@ public class Board{
 			int currCol = (col-row) + 2; 
 			// get the diagonal starting at the calculated column
 			for(int r = 2; currCol < board.length; r += 2, currCol += 2){
-				diagonal += board[r][currCol] + "";
+				diagonal += board[r][currCol];
 			}
 		} 
 		// for the lower triangular half of the board
@@ -239,7 +250,7 @@ public class Board{
 			int currRow = (row-col) + 2;
 			// get diagonal starting at calculated row
 			for(int c = 2; currRow < board.length; c += 2, currRow += 2){
-				diagonal += board[currRow][c] + "";
+				diagonal += board[currRow][c];
 			}
 		}
 
@@ -255,17 +266,7 @@ public class Board{
 	 * @return String - formatted string
 	 */
 	private String onlyTokens(String str){
-		String output = "";
-		// ignore all separators or spaces
-		for(int i = 0; i < str.length(); i++){
-			if(str.charAt(i) != '|' && 
-				 str.charAt(i) != '-' && 
-				 str.charAt(i) != ' ' ){
-				output += str.substring(i, i+1);
-			}
-		}
-
-		return output;
+    return str.replaceAll("[^a-zA-Z]", "");
 	}
 
 	/*

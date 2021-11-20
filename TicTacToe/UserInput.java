@@ -68,8 +68,8 @@ public class UserInput{
 			System.out.println();
 
 			// convert from board number to board index
-			realRow = 2*inputRow + 2; 
-			realCol = 2*inputCol + 2;
+			realRow = Board.toIndex(inputRow); 
+			realCol = Board.toIndex(inputCol);
 			// checks that position has not been taken yet
 			if(!gameBoard.validatePosition(realRow, realCol)){
 				System.out.println("Error: Another player has already made that move\nPlease try again\n");
