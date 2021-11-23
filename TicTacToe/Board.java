@@ -95,17 +95,6 @@ public class Board{
 		}
 	}
 
-	/*
-	 * int toIndex 
-	 * Converts board position to board index
-	 *
-	 * @param position (int) - row or column
-	 * @return int - board index
-	 */
-  public static int toIndex(int position){
-    return 2*position + 2;
-  }
-
 	/*************
 	 * ACCESSORS *
 	 *************/
@@ -269,6 +258,17 @@ public class Board{
     return str.replaceAll("[^a-zA-Z]", "");
 	}
 
+	/*
+	 * int toIndex 
+	 * Converts board position to board index
+	 *
+	 * @param position (int) - row or column
+	 * @return int - board index
+	 */
+  public static int toIndex(int position){
+    return 2*position + 2;
+  }
+  
 	/*
 	 * String toString
 	 * Override toString function so that board gets printed

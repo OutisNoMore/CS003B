@@ -217,7 +217,7 @@ public class UserInput{
 	 * @param sc (Scanner) - input stream to read from
    *        position (String) - row or column
 	 * 				numberOfPlayers (int) - number of players in game
-	 * 	@return int - row or column number
+	 * 	@return int - row or column number, -1 if bad input
 	 */
   private static int getBoardNumber(Scanner sc, String position, int numberOfPlayers){
     int input = -1;
