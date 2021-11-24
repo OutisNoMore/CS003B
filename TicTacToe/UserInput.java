@@ -61,7 +61,7 @@ public class UserInput{
         continue; // invalid input
       }
       // get column number to place token
-      inputCol = getBoardNumber(input, "col", numberOfPlayers);
+      inputCol = getBoardNumber(input, "column", numberOfPlayers);
       if(inputCol == -1){
         continue; // invalid input
       }
