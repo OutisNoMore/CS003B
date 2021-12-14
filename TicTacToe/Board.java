@@ -7,8 +7,8 @@
 //Date: 10/26/2021
 public class Board{
 	private String[][] board; // 2D array of Strings
-	private int boardSize;    // Size of the board
   private int spacesFilled; // Keeps track of how full a board is
+	private int boardSize;    // Size of the board
 
 	/**************
 	 * CONSTRUTOR *

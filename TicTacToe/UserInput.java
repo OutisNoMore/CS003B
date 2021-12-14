@@ -109,18 +109,22 @@ public class UserInput{
 			// check that input is a number
 			if(!sc.hasNextInt()){
 				sc.nextLine(); // clear input buffer
-				System.out.println("\nError: Input must be a whole number\nPlease try again");
+				System.out.println("\nError: Input must be a whole number\nPlease try again\n");
 				continue;
 			}
-			numberOfPlayers = sc.nextInt();
+      String input = sc.nextLine();
+      if(input.length() != 1){
+        System.out.println("\nError: Input must be a single whole number\nPlease try again");
+        continue;
+      }
+			numberOfPlayers = Integer.parseInt(input);
 
 			// check that it is the right number of players
 			if(numberOfPlayers < 3 || numberOfPlayers > 10){
-				sc.nextLine(); // clear input buffer
-				System.out.println("\nError: Input must be between 3 and 10\nPlease try again");
+				System.out.println("\nError: Input must be between 3 and 10\nPlease try again\n");
 				continue;
 			}
-			System.out.println();
+//			System.out.println();
 			break;
 		}
 
@@ -137,7 +141,7 @@ public class UserInput{
 	 */
 	private static char[] getPlayerTokens(Scanner sc, int numberOfPlayers){
 		sc.nextLine(); // clear input buffer
-		char [] playerTokens = new char[numberOfPlayers];
+    String playerTokens = "";
 		String input = "";
 		int count = 1;
 
@@ -158,24 +162,17 @@ public class UserInput{
 			}
 			
 			// check that token is not already taken
-			boolean badToken = false;
-			for(int i = count - 1; i > 0; i--){
-				if(playerTokens[i-1] == input.charAt(0)){
-					System.out.println("Error: Character has already been taken\nPlease try again");
-					badToken = true;
-					break;
-				}
-			}
-			if(badToken){
-				continue;
-			}
+      if(playerTokens.contains(input.charAt(0) + "")){
+				System.out.println("Error: Character has already been taken\nPlease try again");
+        continue;
+      }
 			System.out.println();
 
-			playerTokens[count-1] = input.charAt(0);
+			playerTokens += input.charAt(0) + "";
 			count++;
 		}
 
-		return playerTokens;
+		return playerTokens.toCharArray();
 	}
 
 	/*
@@ -197,10 +194,14 @@ public class UserInput{
 				System.out.println("\nError: Input must be a number\nPlease try again");
 				continue;
 			}
-			winningNumber = sc.nextInt();
+      String input = sc.nextLine();
+      if(input.length() != 1){
+        System.out.println("\nError: Input must be a single number\nPlease try again");
+        continue;
+      }
+			winningNumber = Integer.parseInt(input);
 			// check that input is not out of bounds
 			if(winningNumber <  3 || winningNumber > (numberOfPlayers + 1)){
-				sc.nextLine(); // clear input buffer
 				System.out.println("\nError: Input must be between 3 and " + (numberOfPlayers+1) + "\nPlease try again");
 				continue;
 			}
@@ -229,7 +230,12 @@ public class UserInput{
 			System.out.println("\nError: input must be a number\nPlease try again\n");
 			return -1; // return error
 		}
-		input = sc.nextInt();
+    String in = sc.nextLine();
+    if(in.length() != 1){
+      System.out.println("\nError: input must be a single number\nPlease try again\n");
+      return -1;
+    }
+		input = Integer.parseInt(in);
 		// checks that input is not out of bounds
 		if(input < 0 || input > numberOfPlayers){
 			System.out.println("\nError: input is out of bounds\nPlease try again\n");
